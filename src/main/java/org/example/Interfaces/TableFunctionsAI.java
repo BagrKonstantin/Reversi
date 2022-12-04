@@ -1,9 +1,9 @@
 package org.example.Interfaces;
 
-import org.example.classes.Coords;
-import org.example.classes.Sign;
+import org.example.Classes.Coords;
+import org.example.Classes.Sign;
 
-public interface TableFunctionsAI extends TableFunctionsPlayers {
+public interface TableFunctionsAI {
     Coords chooseCellWithHighestValue();
-    Coords chooseCellWisely(Sign symbol);
+    Coords chooseCellWisely(Sign sign);
 }

@@ -1,15 +1,11 @@
-package org.example.classes;
-
-import org.example.Interfaces.TableFunctionsAI;
-import org.example.Interfaces.TableFunctionsGameplay;
-import org.example.Interfaces.TableFunctionsPlayers;
+package org.example.Classes;
 
 import java.util.Scanner;
 
 
 final public class Gameplay {
     private static final Scanner input = new Scanner(System.in);
-    private TableFunctionsGameplay table;
+    private Delegate.TableFunctions table;
     private int stupidRobotScore;
     private int smartRobotScore;
     private final static String instruction = """
@@ -20,7 +16,7 @@ final public class Gameplay {
             программа запросит повторный ввод.
                         
             Для выхода нажмите Enter
-            """.formatted(Sign.underAttack.getSymbol());
+            """.formatted(Sign.UNDER_ATTACK.toString());
 
     private final static String greetings = """    
             Добро пожаловать в Реверси
@@ -32,14 +28,13 @@ final public class Gameplay {
             4 - посмотреть статистику
             5 - выход
             """;
-    private static final Sign p1 = Sign.white;
-    private static final Sign p2 = Sign.black;
+    private static final Sign p1 = Sign.WHITE;
+    private static final Sign p2 = Sign.BLACK;
 
     Gameplay() {
         stupidRobotScore = 0;
         smartRobotScore = 0;
     }
-
 
     private void showStatistics() {
         System.out.print("\033[H\033[J");
@@ -82,17 +77,19 @@ final public class Gameplay {
     }
 
     public void start(int option) {
-        table = Table.getGameplayFunctions();
+        Delegate delegate = new Delegate();
+        table = delegate.getGameplayFunctions();
+
         Player[] players = switch (option) {
             case 1 -> new Player[]{
-                    new Human(p1, table.getTableFunctionsForPlayers(), input),
-                    new Human(p2, table.getTableFunctionsForPlayers(), input)};
+                    new Human(p1, delegate.getPlayerFunctions(), input),
+                    new Human(p2, delegate.getPlayerFunctions(), input)};
             case 2 -> new Player[]{
-                    new Robot(p1, table.getTableFunctionsForAI()),
-                    new Human(p2, table.getTableFunctionsForPlayers(), input)};
+                    new Robot(p1, delegate.getPlayerFunctions(), delegate.getAIFunctions()),
+                    new Human(p2, delegate.getPlayerFunctions(), input)};
             case 3 -> new Player[]{
-                    new SmartRobot(p1, table.getTableFunctionsForAI()),
-                    new Human(p2, table.getTableFunctionsForPlayers(), input)};
+                    new SmartRobot(p1,  delegate.getPlayerFunctions(), delegate.getAIFunctions()),
+                    new Human(p2, delegate.getPlayerFunctions(), input)};
             default -> new Player[]{};
 
         };
@@ -121,7 +118,7 @@ final public class Gameplay {
             prev = false;
             System.out.println("Сейчас ходит " + players[step % 2]);
             System.out.println(table);
-            step = currentPlayer.Step(step);
+            step = currentPlayer.step(step);
             if (step == -1) {
                 return;
             }

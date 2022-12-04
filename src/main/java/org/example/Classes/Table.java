@@ -1,4 +1,4 @@
-package org.example.classes;
+package org.example.Classes;
 
 import org.example.Interfaces.TableFunctionsAI;
 import org.example.Interfaces.TableFunctionsGameplay;
@@ -6,14 +6,14 @@ import org.example.Interfaces.TableFunctionsPlayers;
 
 import java.util.ArrayList;
 
-public final class Table implements TableFunctionsGameplay, TableFunctionsAI {
+public final class Table implements TableFunctionsGameplay, TableFunctionsPlayers, TableFunctionsAI {
     private static final int table_size = 8;
     private final Cell[][] table;
     private int currentStep;
     private double max_value = 0.0;
     private final ArrayList<Coords> cellsUnderAttack;
 
-    private Table() {
+    public Table() {
         table = new Cell[table_size][table_size];
         cellsUnderAttack = new ArrayList<>();
         for (int i = 0; i < table_size; i++) {
@@ -26,15 +26,15 @@ public final class Table implements TableFunctionsGameplay, TableFunctionsAI {
                 table[i][j] = new Cell(value);
             }
         }
-        table[3][4] = new Cell(Sign.white);
-        table[4][3] = new Cell(Sign.white);
-        table[3][3] = new Cell(Sign.black);
-        table[4][4] = new Cell(Sign.black);
+        table[3][4] = new Cell(Sign.WHITE);
+        table[4][3] = new Cell(Sign.WHITE);
+        table[3][3] = new Cell(Sign.BLACK);
+        table[4][4] = new Cell(Sign.BLACK);
     }
-
-    public static TableFunctionsGameplay getGameplayFunctions() {
-        return new Table();
-    }
+//
+//    //public static TableFunctionsGameplay getGameplayFunctions() {
+//        return new Table();
+//    }
 
     private boolean checkCoords(int row, int col) {
         return 0 <= row && row < 8 && 0 <= col && col < 8;
@@ -161,16 +161,6 @@ public final class Table implements TableFunctionsGameplay, TableFunctionsAI {
         whereCanBePlaced(sign);
     }
 
-    @Override
-    public TableFunctionsAI getTableFunctionsForAI() {
-        return this;
-    }
-
-    @Override
-    public TableFunctionsPlayers getTableFunctionsForPlayers() {
-        return this;
-    }
-
 
     @Override
     public int countPlayerChips(Sign sign) {
@@ -208,7 +198,7 @@ public final class Table implements TableFunctionsGameplay, TableFunctionsAI {
     }
 
     @Override
-    public boolean AddSymbolToBoard(int row, int col, Sign sign, int step) {
+    public boolean addChipToBoard(int row, int col, Sign sign, int step) {
         if (table[row][col].isUnderAttack()) {
             table[row][col].setSigh(sign, step);
             fillCells(row, col, sign);
@@ -218,7 +208,7 @@ public final class Table implements TableFunctionsGameplay, TableFunctionsAI {
     }
 
     @Override
-    public void WriteEveryPossibleCell() {
+    public void writeEveryPossibleCell() {
         for (var item : cellsUnderAttack) {
             System.out.print("(" + item + ") ");
         }
@@ -233,21 +223,21 @@ public final class Table implements TableFunctionsGameplay, TableFunctionsAI {
     }
 
     @Override
-    public Coords chooseCellWisely(Sign symbol) {
+    public Coords chooseCellWisely(Sign sign) {
         int step = currentStep;
         double max_val = -1000;
         Coords point = new Coords(0, 0);
-        Sign enemy_symbol = symbol == Sign.white ? Sign.black : Sign.white;
+        Sign enemy_sign = sign == Sign.WHITE ? Sign.BLACK : Sign.WHITE;
         for (var cell : new ArrayList<>(cellsUnderAttack)) {
             double value = table[cell.row()][cell.col()].getValue();
-            AddSymbolToBoard(cell.row(), cell.col(), symbol, step);
-            prepBeforeStep(currentStep + 1, enemy_symbol);
+            addChipToBoard(cell.row(), cell.col(), sign, step);
+            prepBeforeStep(currentStep + 1, enemy_sign);
             value -= max_value;
             if (value > max_val) {
                 point = new Coords(cell.row(), cell.col());
                 max_val = value;
             }
-            prepBeforeStep(step, symbol);
+            prepBeforeStep(step, sign);
         }
         return point;
     }

@@ -1,8 +1,8 @@
 package org.example.Interfaces;
 
-import org.example.classes.Sign;
+import org.example.Classes.Sign;
 
 public interface TableFunctionsPlayers {
-    boolean AddSymbolToBoard(int a, int b, Sign sign, int step);
-    void WriteEveryPossibleCell();
+    boolean addChipToBoard(int row, int col, Sign sign, int step);
+    void writeEveryPossibleCell();
 }

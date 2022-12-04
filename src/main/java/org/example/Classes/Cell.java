@@ -1,4 +1,4 @@
-package org.example.classes;
+package org.example.Classes;
 
 public final class Cell {
     Sign[] condition = new Sign[100];
@@ -8,7 +8,7 @@ public final class Cell {
 
     Cell(double value) {
         cellPositionValue = value;
-        condition[0] = Sign.empty;
+        condition[0] = Sign.EMPTY;
     }
 
     Cell(Sign sign) {
@@ -29,7 +29,7 @@ public final class Cell {
     }
 
     public boolean isEmpty(int step) {
-        return condition[step] == Sign.empty;
+        return condition[step] == Sign.EMPTY;
     }
 
     public Sign getSign(int step) {
@@ -41,7 +41,7 @@ public final class Cell {
     }
 
     public String toString(int step) {
-        if (isUnderAttack()) return Sign.underAttack.getSymbol();
-        return getSign(step).getSymbol();
+        if (isUnderAttack()) return Sign.UNDER_ATTACK.toString();
+        return getSign(step).toString();
     }
 }

@@ -1,4 +1,4 @@
-package org.example.classes;
+package org.example.Classes;
 
 
 public class Main {
