@@ -7,6 +7,7 @@ import org.example.Interfaces.TableFunctionsPlayers;
 public final class Delegate {
 
     private final Table table;
+
     Delegate() {
         table = new Table();
     }
@@ -15,7 +16,7 @@ public final class Delegate {
         return new TableFunctions();
     }
 
-    public  PlayerFunctions getPlayerFunctions() {
+    public PlayerFunctions getPlayerFunctions() {
         return new PlayerFunctions();
     }
 
@@ -23,7 +24,19 @@ public final class Delegate {
         return new AIFunctions();
     }
 
-    public final class AIFunctions implements TableFunctionsAI{
+    public class PlayerFunctions implements TableFunctionsPlayers {
+        @Override
+        public boolean addChipToBoard(int row, int col, Sign sign, int step) {
+            return table.addChipToBoard(row, col, sign, step);
+        }
+
+        @Override
+        public void writeEveryPossibleCell() {
+            table.writeEveryPossibleCell();
+        }
+    }
+
+    public final class AIFunctions extends PlayerFunctions implements TableFunctionsAI {
 
         @Override
         public Coords chooseCellWithHighestValue() {
@@ -36,19 +49,7 @@ public final class Delegate {
         }
     }
 
-    public final class PlayerFunctions implements TableFunctionsPlayers {
-        @Override
-        public boolean addChipToBoard(int row, int col, Sign sign, int step) {
-            return table.addChipToBoard(row, col, sign, step);
-        }
-
-        @Override
-        public void writeEveryPossibleCell() {
-            table.writeEveryPossibleCell();
-        }
-    }
-
-    public final class TableFunctions  implements TableFunctionsGameplay{
+    public final class TableFunctions implements TableFunctionsGameplay {
         @Override
         public int countPlayerChips(Sign sign) {
             return table.countPlayerChips(sign);
@@ -63,6 +64,7 @@ public final class Delegate {
         public void prepBeforeStep(int step, Sign sign) {
             table.prepBeforeStep(step, sign);
         }
+
         @Override
         public String toString() {
             return table.toString();

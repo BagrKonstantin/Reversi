@@ -31,10 +31,7 @@ public final class Table implements TableFunctionsGameplay, TableFunctionsPlayer
         table[3][3] = new Cell(Sign.BLACK);
         table[4][4] = new Cell(Sign.BLACK);
     }
-//
-//    //public static TableFunctionsGameplay getGameplayFunctions() {
-//        return new Table();
-//    }
+
 
     private boolean checkCoords(int row, int col) {
         return 0 <= row && row < 8 && 0 <= col && col < 8;
@@ -80,8 +77,7 @@ public final class Table implements TableFunctionsGameplay, TableFunctionsPlayer
     }
 
     private int pointsForCell(int row, int col) {
-        if (row == 0 || col == 0 || row == 7 || col == 7) return 2;
-        return 1;
+        return (row == 0 || col == 0 || row == 7 || col == 7) ? 2 : 1;
     }
 
     private int countValuesOfCell(int row, int col, int a, int b, int k, Sign sign) {
@@ -142,7 +138,7 @@ public final class Table implements TableFunctionsGameplay, TableFunctionsPlayer
     }
 
     private void clearValues() {
-        for (var cell: cellsUnderAttack)
+        for (var cell : cellsUnderAttack)
             table[cell.row()][cell.col()].setValue(0);
         max_value = 0;
         cellsUnderAttack.clear();

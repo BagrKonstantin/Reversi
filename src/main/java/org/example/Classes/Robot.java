@@ -1,22 +1,17 @@
 package org.example.Classes;
 
 public class Robot extends Player {
-
-    protected Delegate.AIFunctions aiFunctions;
-
-    Robot(Sign sign, Delegate.PlayerFunctions playerFunctions, Delegate.AIFunctions aiFunctions) {
+    Robot(Sign sign, Delegate.PlayerFunctions playerFunctions) {
         super(sign, playerFunctions, "Глупый робот");
-        this.aiFunctions = aiFunctions;
     }
 
-    protected Robot(Sign sign, Delegate.PlayerFunctions playerFunctions, Delegate.AIFunctions aiFunctions, String name) {
+    protected Robot(Sign sign, Delegate.PlayerFunctions playerFunctions, String name) {
         super(sign, playerFunctions, name);
-        this.aiFunctions = aiFunctions;
     }
 
     @Override
     public int step(int step) {
-        Coords point = aiFunctions.chooseCellWithHighestValue();
+        Coords point = ((Delegate.AIFunctions)playerFunctions).chooseCellWithHighestValue();
         System.out.println(this + " сходил на (" + point + ')');
         return doStep(point.row(), point.col(), step);
     }

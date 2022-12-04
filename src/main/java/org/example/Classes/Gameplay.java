@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 final public class Gameplay {
     private static final Scanner input = new Scanner(System.in);
+    private static final Sign player1 = Sign.WHITE;
+    private static final Sign player2 = Sign.BLACK;
     private Delegate.TableFunctions table;
     private int stupidRobotScore;
     private int smartRobotScore;
@@ -28,8 +30,6 @@ final public class Gameplay {
             4 - посмотреть статистику
             5 - выход
             """;
-    private static final Sign p1 = Sign.WHITE;
-    private static final Sign p2 = Sign.BLACK;
 
     Gameplay() {
         stupidRobotScore = 0;
@@ -82,14 +82,14 @@ final public class Gameplay {
 
         Player[] players = switch (option) {
             case 1 -> new Player[]{
-                    new Human(p1, delegate.getPlayerFunctions(), input),
-                    new Human(p2, delegate.getPlayerFunctions(), input)};
+                    new Human(player1, delegate.getPlayerFunctions(), input),
+                    new Human(player2, delegate.getPlayerFunctions(), input)};
             case 2 -> new Player[]{
-                    new Robot(p1, delegate.getPlayerFunctions(), delegate.getAIFunctions()),
-                    new Human(p2, delegate.getPlayerFunctions(), input)};
+                    new Robot(player1, delegate.getAIFunctions()),
+                    new Human(player2, delegate.getPlayerFunctions(), input)};
             case 3 -> new Player[]{
-                    new SmartRobot(p1,  delegate.getPlayerFunctions(), delegate.getAIFunctions()),
-                    new Human(p2, delegate.getPlayerFunctions(), input)};
+                    new SmartRobot(player1, delegate.getAIFunctions()),
+                    new Human(player2, delegate.getPlayerFunctions(), input)};
             default -> new Player[]{};
 
         };
@@ -127,15 +127,15 @@ final public class Gameplay {
 
     void end(Player[] player, int step) {
         System.out.println("Игра окончена за " + (step - 2) + " ходов");
-        int p1score = table.countPlayerChips(p1);
-        int p2score = table.countPlayerChips(p2);
+        int p1score = table.countPlayerChips(player1);
+        int p2score = table.countPlayerChips(player2);
 
-        if (player[0] instanceof Human player1 && player[1] instanceof Human player2) {
-            if (p1score > p2score) System.out.println(player1 + " победил!");
-            else if (p1score < p2score) System.out.printf(player2 + " победил!");
+        if (player[0] instanceof Human p1 && player[1] instanceof Human p2) {
+            if (p1score > p2score) System.out.println(p1 + " победил!");
+            else if (p1score < p2score) System.out.printf(p2 + " победил!");
             else System.out.println("Ничья!");
-            System.out.println(player1 + " набрал " + p1score + " очков");
-            System.out.println(player2 + " набрал " + p2score + " очков");
+            System.out.println(p1 + " набрал " + p1score + " очков");
+            System.out.println(p2 + " набрал " + p2score + " очков");
         } else {
             if (p1score > p2score) System.out.println("Вы проиграли!");
             else if (p1score < p2score) System.out.println("Вы победили!");
@@ -149,6 +149,7 @@ final public class Gameplay {
         }
 
         System.out.println("\nДля выхода нажмите Enter");
+        input.nextLine();
         input.nextLine();
     }
 }

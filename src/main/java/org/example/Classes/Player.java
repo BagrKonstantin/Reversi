@@ -1,6 +1,5 @@
 package org.example.Classes;
 
-
 public abstract class Player {
     protected Delegate.PlayerFunctions playerFunctions;
     private final String name;
